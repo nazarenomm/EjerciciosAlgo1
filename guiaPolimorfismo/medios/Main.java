@@ -1,4 +1,4 @@
-package guiaPolimorfismo;
+package guiaPolimorfismo.medios;
 
 public class Main {
     public static void main(String[] args) {
