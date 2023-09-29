@@ -3,6 +3,7 @@ package copiaProfunda;
 public class MainB {
     public static void main(String[] args) {
         Persona juana = new Persona("Juana", 22, 12345678);
+        Persona copiaJuana = Persona.copiaProfunda(juana);
         
         System.out.println(juana);      // Juana, 22, 12345678
         System.out.println(copiaJuana); // Juana, 22, 12345678
