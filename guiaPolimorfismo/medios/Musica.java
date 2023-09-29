@@ -1,4 +1,4 @@
-package guiaPolimorfismo.medios;
+package medios;
 
 public class Musica extends Medio {
     private String titulo;

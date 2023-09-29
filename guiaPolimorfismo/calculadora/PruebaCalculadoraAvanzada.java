@@ -1,4 +1,4 @@
-package guiaPolimorfismo.calculadora;
+package calculadora;
 
 public class PruebaCalculadoraAvanzada {
     public static void main(String[] args) {
