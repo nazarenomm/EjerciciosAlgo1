@@ -4,6 +4,7 @@
         "guiaHerencia",
         "guiaIntroduccion",
         "Ejercicios",
-        "guiaIgualdadCopia"
+        "guiaIgualdadCopia",
+        "guiaInterfacesYAbstractas",
     ]
 }
