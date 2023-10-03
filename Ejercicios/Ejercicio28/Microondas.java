@@ -6,7 +6,8 @@ public class Microondas {
     private boolean vacio;
     private String contenido;
     private boolean encendido;
-    private int puntoCoccion;
+    private int segundos;
+    private int intensidad;
 
     public Microondas() {
         this.puertaAbierta = false;
@@ -18,6 +19,7 @@ public class Microondas {
     public void abrirPuerta() {
         if (!encendido) {
             this.puertaAbierta = true;
+            System.out.println("Se abre la puerta");
         } else {
             System.out.println("El microondas está encendido, no se puede abrir la puerta");
         }
@@ -25,15 +27,17 @@ public class Microondas {
 
     public void cerrarPuerta() {
         this.puertaAbierta = false;
+        System.out.println("Se cierra la puerta");
     }
 
     public void insertarComida(String comida) {
         if (puertaAbierta && vacio) {
             this.vacio = false;
             this.contenido = comida;
-        } else if (puertaAbierta) {
-            System.out.println("El microondas no está vacío");
+            System.out.println("Pongo " + comida + " en el microondas");
         } else if (vacio) {
+            System.out.println("El microondas no está vacío");
+        } else if (!puertaAbierta) {
             System.out.println("La puerta está cerrada");
         }
     }
@@ -52,13 +56,14 @@ public class Microondas {
 
     public void iniciarCoccion(int intensidad, int segundos) {
         if (!puertaAbierta && !vacio) {
+            this.intensidad = intensidad;
+            this.segundos = segundos;
             this.encendido = true;
-            this.puntoCoccion = intensidad * segundos;
-            System.out.println("Cocinando...");
-        } else if (!puertaAbierta) {
-            System.out.println("La puerta está cerrada");
-        } else if (!vacio) {
-            System.out.println("El microondas no está vacío");
+            System.out.println("Cocinando " + this.contenido);
+        } else if (puertaAbierta) {
+            System.out.println("La puerta está abierta");
+        } else if (vacio) {
+            System.out.println("El microondas está vacío");
         }
     }
 
@@ -66,11 +71,31 @@ public class Microondas {
         if (this.encendido) {
             System.out.println("Cocción finalizada");
             this.encendido = false;
-            this.contenido = this.contenido + ", punto de cocción: " + this.puntoCoccion;
+            this.contenido = this.contenido + ", punto de cocción: " + (this.intensidad * this.segundos);
         } else {
             System.out.println("El microondas está apagado");
         }
     }
 
-    
+    public void abortarCoccion(int segundosFaltantes) {
+        if (segundosFaltantes <= this.segundos) {
+            this.segundos -= segundosFaltantes;
+            this.finalizarCoccion();
+            this.abrirPuerta();
+        } else {
+            System.out.println("Segundos faltantes inválidos");
+        }
+    }
+
+    public static void main(String[] args) {
+        Microondas microondas = new Microondas();
+        microondas.abrirPuerta();
+        microondas.insertarComida("Papas");
+        microondas.iniciarCoccion(10, 30);
+        microondas.cerrarPuerta();
+        microondas.iniciarCoccion(10, 30);
+        microondas.abortarCoccion(16);
+        microondas.retirarComida();
+        
+    }
 }
