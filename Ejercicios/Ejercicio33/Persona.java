@@ -30,7 +30,6 @@ public class Persona {
         System.out.println("Ingrese ciudad: ");
         String ciudad = scanner.nextLine();
 
-        scanner.close();
         return new Persona(nombre, direccion, ciudad);
     }
 

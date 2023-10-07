@@ -15,7 +15,7 @@ public class Paciente extends Persona {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public static Persona leer() {
+    public static Paciente leer() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Ingrese nombre: ");
@@ -27,16 +27,20 @@ public class Paciente extends Persona {
         System.out.println("Ingrese ciudad: ");
         String ciudad = scanner.nextLine();
 
-        System.out.println("Ingrese codigo de diagnóstico: ");
+        System.out.println("Ingrese código de diagnóstico: ");
         int codigoDiagnostico = scanner.nextInt();
+        
+        // Consume el carácter de nueva línea después de nextInt()
+        scanner.nextLine();
 
-        System.out.println("Ingrese telefóno: ");
+        System.out.println("Ingrese teléfono: ");
         int telefono = scanner.nextInt();
+        
+        // Consume el carácter de nueva línea después de nextInt()
+        scanner.nextLine();
 
         System.out.println("Ingrese fecha de nacimiento: ");
         String fechaNacimiento = scanner.nextLine();
-
-        scanner.close();
 
         return new Paciente(nombre, direccion, ciudad, codigoDiagnostico, telefono, fechaNacimiento);
     }
@@ -54,4 +58,29 @@ public class Paciente extends Persona {
     public void enviarFactura() {
         System.out.println("Factura enviada a " + this.getNombre() + " a la dirección " + this.getDireccion());
     }
+
+    public int getCodigoDiagnostico() {
+        return codigoDiagnostico;
+    }
+
+    public void setCodigoDiagnostico(int codigoDiagnostico) {
+        this.codigoDiagnostico = codigoDiagnostico;
+    }
+
+    public int getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(int telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(String fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+    
 }
