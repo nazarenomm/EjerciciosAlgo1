@@ -55,7 +55,5 @@ public class HistoriaAcademica {
     public void setMap(Map<Materia, Set<Double>> map) {
         this.map = map;
     }
-
-    
     
 }

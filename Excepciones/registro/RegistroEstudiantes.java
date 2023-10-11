@@ -2,6 +2,7 @@ package registro;
 
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 import registro.excepciones.EdadInvalidaException;
@@ -16,7 +17,7 @@ public class RegistroEstudiantes<E extends Estudiante> {
     }
 
     public void agregar() throws NombreInvalidoException, EdadInvalidaException, PromedioInvalidoException {
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
 
         System.out.println("Ingrese nombre: ");
         String nombre = scanner.nextLine();
