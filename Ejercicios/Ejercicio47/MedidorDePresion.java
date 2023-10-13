@@ -29,4 +29,9 @@ public class MedidorDePresion implements Medible {
             return false;
         }
     }
+
+    @Override
+    public String toString() {
+        return "Medidor de Presion".toString();
+    }
 }

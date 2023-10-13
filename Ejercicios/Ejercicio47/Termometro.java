@@ -26,4 +26,9 @@ public class Termometro implements Medible {
             return false;
         }
     }
+
+    @Override
+    public String toString() {
+        return "Termometro".toString();
+    }
 }

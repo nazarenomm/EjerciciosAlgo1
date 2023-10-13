@@ -26,4 +26,9 @@ public class CuentaBancaria implements Medible{
             return false;
         }
     }
+
+    @Override
+    public String toString() {
+        return "Cuenta Bancaria".toString();
+    }
 }
