@@ -5,15 +5,23 @@ public class Hora {
     private int minutos;
     private int segundos;
 
-    public Hora(int horas, int minutos, int segundos) {
-        this.horas = horas;
-        this.minutos = minutos;
-        this.segundos = segundos;
+    public Hora(int horas, int minutos, int segundos) throws HoraInvalidaException {
+        if (horas < 0 || horas > 23 || minutos < 0 
+            || minutos > 59 || segundos < 0 || segundos > 59) {
+            throw new HoraInvalidaException();
+        } else {
+            this.horas = horas;
+            this.minutos = minutos;
+            this.segundos = segundos;
+        }
     }
 
     public Hora() {
-        this(0, 0, 0);
+        this.horas = 0;
+        this.minutos = 0;
+        this.segundos = 0;
     }
+
     @Override
     public String toString() {
         return horas + ":" + minutos + ":" + segundos;
@@ -38,7 +46,12 @@ public class Hora {
             segundosRes = hora.segundos + this.segundos - 60;
         } else segundosRes = hora.segundos + this.segundos;
 
+        try {
         return new Hora(horasRes, minutosRes, segundosRes);
+        } catch (HoraInvalidaException e) {
+            System.out.println("Resultado inválido (no es un horario posible)");
+            return this;
+        }
     }
 
 

@@ -5,9 +5,13 @@ public class Empleado {
     private int numero;
     private String nombre;
 
-    public Empleado(String nombre, int numero) {
-        this.nombre = nombre;
-        this.numero = numero;
+    public Empleado(String nombre, int numero) throws NumeroEmpleadoInvalido {
+        if (numero < 18) {
+            throw new NumeroEmpleadoInvalido();
+        } else {
+            this.nombre = nombre;
+            this.numero = numero;
+        }
     }
 
     public void verDatos() {
@@ -33,8 +37,12 @@ public class Empleado {
         String[] nombres = {"Agustin", "Diego", "Mauro", "Leonel", "Nazareno"};
         Empleado[] empleados = new Empleado[nombres.length];
         for (int i = 1; i <= nombres.length; i++) {
-            Empleado empleado = new Empleado(nombres[i - 1], i);
-            empleados[i - 1] = empleado;
+            try {
+                Empleado empleado = new Empleado(nombres[i - 1], i);
+                empleados[i - 1] = empleado;
+            } catch (NumeroEmpleadoInvalido e) {
+                System.out.println(e.getMessage());
+            }
         }
 
         for (Empleado empleado : empleados) {
