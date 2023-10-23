@@ -20,7 +20,7 @@ public class Potencia {
     }
 
     public static void main(String[] args) {
-        Potencia pot = new Potencia(-2, 2);
+        Potencia pot = new Potencia(5, 10000);
         System.out.println(pot.evaluar());
     }
 }

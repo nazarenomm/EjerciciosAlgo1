@@ -11,14 +11,19 @@ public class Ecuacion {
         this.c = c;
     }
 
-    public double[] raices() {
+    public double[] raices() throws RaicesImaginariasException{
         double sq = b*b - 4*a*c;
+        if (sq < 0) {
+            throw new RaicesImaginariasException();
+        }
+        else {
         double x1 = (b + Math.sqrt(sq))/(2*a);
         double x2 = (b - Math.sqrt(sq))/(2*a);
         double[] raices = new double[2];
         raices[0] = x1;
         raices[1] = x2;
         return raices;
+        }
     }
 
     @Override
@@ -36,9 +41,13 @@ public class Ecuacion {
     }
 
     public static void main(String[] args) {
-        Ecuacion ec = new Ecuacion(1, 1, -2);
+        Ecuacion ec = new Ecuacion(1, 0, 4);
         System.out.println(ec);
+        try {
         System.out.println("raices: " + ec.raices()[0] + "; " + ec.raices()[1]);
+        } catch (RaicesImaginariasException e) {
+            System.out.println(e.getMessage());
+        }
     }
     
 }
