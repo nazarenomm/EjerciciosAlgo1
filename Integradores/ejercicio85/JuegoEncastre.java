@@ -2,6 +2,7 @@ package ejercicio85;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class JuegoEncastre {
 
@@ -31,11 +32,45 @@ public class JuegoEncastre {
         }
         return intentos;
     }
+
+    public static int jugar(int cantidad) throws DemasiadosIntentosException {
+        int intentos = 0;
+        List<Forma> huecos = new ArrayList<>();
+        List<Forma> bloques = new ArrayList<>();
+        List<Forma> formas = new ArrayList<>();
+
+        for (int i = 0; i < cantidad; i++) {
+            Forma forma = new Forma();
+            formas.add(forma);
+        }
+
+        for (Forma forma : formas) {
+            int indice = ThreadLocalRandom.current().nextInt(0, formas.size());
+            bloques.add(indice, forma);
+            indice = ThreadLocalRandom.current().nextInt(0, formas.size());
+            huecos.add(indice, forma);
+        }
+
+        for (Forma bloque : bloques) {
+            boolean encastro = false;
+            while (!encastro) {
+                for (Forma hueco : huecos) {
+                    intentos++;
+                    if (intentos > 1000000) throw new DemasiadosIntentosException();
+                    if (bloque.equals(hueco)) {
+                        huecos.remove(hueco);
+                        encastro = true;
+                    }
+                }   
+            }   
+        }
+        return intentos;
+    }
     public static void main(String[] args) {
         try {
-            int intentos = jugar(670, 1500);
+            int intentos = jugar(10);
             System.out.println("intentos necesario: " + intentos);
-        } catch (CantidadBloquesInvalida | DemasiadosIntentosException e) {
+        } catch (DemasiadosIntentosException e) {
             System.out.println(e.getMessage());
         }
     }
