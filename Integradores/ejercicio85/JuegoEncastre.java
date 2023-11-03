@@ -1,8 +1,8 @@
 package ejercicio85;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class JuegoEncastre {
 
@@ -45,24 +45,24 @@ public class JuegoEncastre {
         }
 
         for (Forma forma : formas) {
-            int indice = ThreadLocalRandom.current().nextInt(0, formas.size());
-            bloques.add(indice, forma);
-            indice = ThreadLocalRandom.current().nextInt(0, formas.size());
-            huecos.add(indice, forma);
+            huecos.add(forma);
+            bloques.add(forma);
         }
+        Collections.shuffle(bloques);
 
         for (Forma bloque : bloques) {
-            boolean encastro = false;
-            while (!encastro) {
-                for (Forma hueco : huecos) {
+            //boolean encastro = false;
+            for (Forma hueco : huecos) {
+                //if (encastro == false) {
                     intentos++;
                     if (intentos > 1000000) throw new DemasiadosIntentosException();
                     if (bloque.equals(hueco)) {
                         huecos.remove(hueco);
-                        encastro = true;
+                        //encastro = true;
+                        break;
                     }
-                }   
-            }   
+                //}
+            }
         }
         return intentos;
     }

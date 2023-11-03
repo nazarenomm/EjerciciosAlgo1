@@ -5,4 +5,7 @@ import java.util.List;
 public class Pagina {
 
     private List<String> texto;
+    private int numero;
+
+    
 }
