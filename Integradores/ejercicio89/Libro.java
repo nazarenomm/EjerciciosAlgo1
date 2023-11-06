@@ -7,6 +7,13 @@ public class Libro {
     private String editorial;
     private int añoPublicacion;
 
+    public Libro(String titulo, String autor, String editorial, int añoPublicacion) {
+        this.titulo = titulo;
+        this.autor = autor;
+        this.editorial = editorial;
+        this.añoPublicacion = añoPublicacion;
+    }
+
     @Override
     public boolean equals(Object otro) {
         if (this == otro) return true;
@@ -20,7 +27,8 @@ public class Libro {
 
     @Override
     public int hashCode() {
-        
+        //TODO
+        return 0;
     }
 
     public String getTitulo() {
