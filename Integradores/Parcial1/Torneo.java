@@ -5,13 +5,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import Ejercicio43.Par;
+
 public class Torneo {
     
     private List<Equipo> equipos;
-
+    private List<Par<LocalDate, String>> partidosFecha;
 
     public Torneo() {
         this.equipos = new ArrayList<>();
+        this.partidosFecha = new ArrayList<>();
     }
 
     public void cargarEquipo(String nombreEquipo, int cantidadFans) {
@@ -19,32 +22,40 @@ public class Torneo {
         this.equipos.add(equipo);
     }
 
-    public void cargarPartido(String equipoLocal, String equipoVisitante, LocalDate fecha, int golesLocal, int golesVisitante) {
-        boolean localEncontrado = false;
-        boolean visitanteEncontrado = false;
-        Equipo local = null;  //:(
-        Equipo visitante = null;
-        for (Equipo equipo : equipos) {
-            if (equipo.getNombre().equals(equipoLocal)) {
-                localEncontrado = true;
-                local = equipo;
+    public void cargarPartido(String local, String visitante, LocalDate fecha, int golesLocal, int golesVisitante) {
+        if (equipos.size() < 2) {
+            throw new IllegalArgumentException("Equipos insuficientes");
+        }
+        boolean encontrados = false;
+        for (Equipo equipoLocal : this.equipos) {
+            if (equipoLocal.getNombre().equals(local)) {
+                for (Equipo equipoVisitante : this.equipos) {
+                    if(equipoVisitante.getNombre().equals(visitante)) {
+                        encontrados = true;
+                        equipoLocal.jugarPartido(golesLocal, golesVisitante);
+                        equipoVisitante.jugarPartido(golesVisitante, golesLocal);
+                        String partido = "Fecha: " + fecha.toString() + ", " + local + " (" + golesLocal + ")" + " - " + visitante + " (" + golesVisitante + ")";
+                        partidosFecha.add(new Par<LocalDate,String>(fecha, partido));
+                    }
                 }
-            if (equipo.getNombre().equals(equipoVisitante)) {
-                visitanteEncontrado = true;
-                visitante = equipo;
             }
         }
-
-        if (!(localEncontrado && visitanteEncontrado)) {
-            throw new IllegalArgumentException("Un equipo no participa del torneo");
+        if (!encontrados) {
+            throw new IllegalArgumentException("Equipo no encontrado");
         }
-
-        local.jugarPartido(golesLocal, golesVisitante);
-        visitante.jugarPartido(golesVisitante, golesLocal);
     }
 
-    public mostrarPartidosFecha(LocalDate fecha) {
-
+    public void mostrarPartidosFecha(LocalDate fecha) {
+        boolean encontrado = false;
+        for (Par<LocalDate,String> partido : partidosFecha) {
+            if (partido.getA().equals(fecha)) {
+                System.out.println(partido.getB());
+                encontrado = true;
+            }
+        }
+        if (!encontrado) {
+            throw new IllegalArgumentException("Fecha no encontrada");
+        }
     }
 
     public void mostrarTablaPosiciones() {
@@ -72,6 +83,8 @@ public class Torneo {
         torneo.cargarPartido("Estudian", "Ferro CO", LocalDate.of(2023, 11, 8), 3, 0);
         torneo.cargarPartido("Gimnasia", "Huracán ", LocalDate.of(2023, 11, 8), 1, 1);
 
+        torneo.mostrarPartidosFecha(LocalDate.of(2023, 11, 8));
+        System.out.println();
         torneo.mostrarTablaPosiciones();
     }
 }

@@ -31,7 +31,7 @@ public class Equipo implements Comparable<Equipo>{
         } else if (goles < golesRival) {
             this.partidosPerdidos += 1;
         } else {
-            this.partidosPerdidos += 1;
+            this.partidosEmpatados += 1;
         }
 
     }
