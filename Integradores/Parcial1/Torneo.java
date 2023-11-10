@@ -5,86 +5,73 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import Ejercicio43.Par;
+// import Parcial1.EquipoInvalidoException;
 
 public class Torneo {
-    
+    private List<Partido> partidos;
     private List<Equipo> equipos;
-    private List<Par<LocalDate, String>> partidosFecha;
 
     public Torneo() {
+        this.partidos = new ArrayList<>();
         this.equipos = new ArrayList<>();
-        this.partidosFecha = new ArrayList<>();
     }
 
     public void cargarEquipo(String nombreEquipo, int cantidadFans) {
-        Equipo equipo = new Equipo(nombreEquipo, cantidadFans);
-        this.equipos.add(equipo);
+        try {
+            Equipo equipo = new Equipo(nombreEquipo, cantidadFans);
+            if (this.equipos.contains(equipo)) throw new EquipoInvalidoException(nombreEquipo);
+            this.equipos.add(equipo);
+        } catch (EquipoInvalidoException e) {
+            System.out.println(e.getMessage() + " ya participa del torneo");
+        }
     }
 
-    public void cargarPartido(String local, String visitante, LocalDate fecha, int golesLocal, int golesVisitante) {
-        if (equipos.size() < 2) {
-            throw new IllegalArgumentException("Equipos insuficientes");
-        }
-        boolean encontrados = false;
-        for (Equipo equipoLocal : this.equipos) {
-            if (equipoLocal.getNombre().equals(local)) {
-                for (Equipo equipoVisitante : this.equipos) {
-                    if(equipoVisitante.getNombre().equals(visitante)) {
-                        encontrados = true;
-                        equipoLocal.jugarPartido(golesLocal, golesVisitante);
-                        equipoVisitante.jugarPartido(golesVisitante, golesLocal);
-                        String partido = "Fecha: " + fecha.toString() + ", " + local + " (" + golesLocal + ")" + " - " + visitante + " (" + golesVisitante + ")";
-                        partidosFecha.add(new Par<LocalDate,String>(fecha, partido));
-                    }
+    public void cargarPartido(String nombreLocal, String nombreVisitante, 
+                    int golesLocal, int golesVisitante, LocalDate fecha) {
+        try {
+            Equipo local = null; //TODO: no me gusta
+            Equipo visitante = null;
+
+            for (Equipo equipo : equipos) {
+                if (equipo.getNombre().equals(nombreLocal)) {
+                    local = equipo;
+                }
+                if (equipo.getNombre().equals(nombreVisitante)) {
+                    visitante = equipo;
                 }
             }
-        }
-        if (!encontrados) {
-            throw new IllegalArgumentException("Equipo no encontrado");
+
+            if (local == null) throw new EquipoInvalidoException(nombreLocal);
+            if (visitante == null) throw new EquipoInvalidoException(nombreVisitante);
+
+            Partido partido = new Partido(local, visitante, golesLocal, golesVisitante, fecha);
+            partidos.add(partido);
+            partido.jugar();
+        } catch (EquipoInvalidoException e) {
+            System.out.println(e.getMessage() + " no participa del torneo");
         }
     }
 
     public void mostrarPartidosFecha(LocalDate fecha) {
-        boolean encontrado = false;
-        for (Par<LocalDate,String> partido : partidosFecha) {
-            if (partido.getA().equals(fecha)) {
-                System.out.println(partido.getB());
-                encontrado = true;
+        try {
+            boolean huboPartido = false;
+            for (Partido partido : this.partidos) {
+                if (partido.getFecha().equals(fecha)) {
+                    partido.mostrar();
+                    huboPartido = true;
+                }
             }
-        }
-        if (!encontrado) {
-            throw new IllegalArgumentException("Fecha no encontrada");
+            if (!huboPartido) throw new IllegalArgumentException("No hubo partidos esa fecha");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
     }
 
-    public void mostrarTablaPosiciones() {
-        System.out.println("Equipo  | Pts | PJ | PG | PE | PP | GF | GC | DG |");
+    public void mostrarTabla() {
         Collections.sort(equipos, Collections.reverseOrder());
+        System.out.println("Equipo  | PJ | Pu | PG | PE | PP | GF | GC | DG |");
         for (Equipo equipo : equipos) {
-            System.out.println(equipo.printData(" |  "));
+            equipo.mostrarEnTabla("  | ");
         }
-    }
-
-    public static void main(String[] args) {
-        Torneo torneo = new Torneo();
-
-        torneo.cargarEquipo("Arsenal ", 1000);
-        torneo.cargarEquipo("Boca Jrs", 20000000);
-        torneo.cargarEquipo("Colón SF", 30000);
-        torneo.cargarEquipo("Defensa ", 4000);
-        torneo.cargarEquipo("Estudian", 500000);
-        torneo.cargarEquipo("Ferro CO", 60000);
-        torneo.cargarEquipo("Gimnasia", 400000);
-        torneo.cargarEquipo("Huracán ", 500000);
-
-        torneo.cargarPartido("Arsenal ", "Boca Jrs", LocalDate.of(2023, 11, 8), 1, 3);
-        torneo.cargarPartido("Colón SF", "Defensa ", LocalDate.of(2023, 11, 8), 2, 1);
-        torneo.cargarPartido("Estudian", "Ferro CO", LocalDate.of(2023, 11, 8), 3, 0);
-        torneo.cargarPartido("Gimnasia", "Huracán ", LocalDate.of(2023, 11, 8), 1, 1);
-
-        torneo.mostrarPartidosFecha(LocalDate.of(2023, 11, 8));
-        System.out.println();
-        torneo.mostrarTablaPosiciones();
     }
 }

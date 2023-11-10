@@ -9,7 +9,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MazoPoker {
     private ArrayDeque<Carta> cartas;
     private List<Carta> cartasFaltantes;
-    private static final int SIZE_MAX = 52;
 
     public MazoPoker(ArrayDeque<Carta> cartas) {
         this.cartas = cartas;
@@ -70,7 +69,6 @@ public class MazoPoker {
         }
     }
 
-    //TODO ver si hay forma de invertir un deque, para no repetir codigo
     public void agregarCartasAbajo(int cantidad) {
         if (cantidad > cartasFaltantes.size()) {
             throw new IllegalArgumentException("No hay suficientes cartas");

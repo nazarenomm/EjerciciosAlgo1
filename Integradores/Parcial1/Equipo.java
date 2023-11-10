@@ -2,46 +2,58 @@ package Parcial1;
 
 public class Equipo implements Comparable<Equipo>{
     private String nombre;
-    private int cantidadFans;
-    private int partidosJugados;
+    private int fans;
+    private int partidosPerdidos;
     private int partidosEmpatados;
     private int partidosGanados;
-    private int partidosPerdidos;
     private int golesAFavor;
     private int golesEnContra;
-    private int diferenciaGol;
-    
-    public Equipo(String nombre, int cantidadFans) {
+
+
+    public Equipo(String nombre, int fans) {
         this.nombre = nombre;
-        this.cantidadFans = cantidadFans;
+        this.fans = fans;
+    }
+
+    public void mostrarEnTabla(String sep) {
+        int partidosJugados = partidosEmpatados + partidosGanados + partidosPerdidos;
+        int puntos = partidosGanados*3 + partidosEmpatados;
+        int difGol = golesAFavor - golesEnContra;
+        
+        System.out.println(nombre + sep + partidosJugados + sep + puntos + sep + partidosGanados + sep +
+            partidosEmpatados + sep + partidosPerdidos + sep + golesAFavor + sep + golesEnContra + sep + difGol + sep);
     }
 
     public String getNombre() {
         return nombre;
     }
-    
-    public void jugarPartido(int goles, int golesRival) {
-        this.partidosJugados += 1;
-        this.golesAFavor += goles;
-        this.golesEnContra += golesRival;
-        this.diferenciaGol = this.golesAFavor - this.golesEnContra;
 
-        if (goles > golesRival) {
-            this.partidosGanados += 1;
-        } else if (goles < golesRival) {
-            this.partidosPerdidos += 1;
-        } else {
-            this.partidosEmpatados += 1;
-        }
-
+    public int getFans() {
+        return fans;
     }
 
-    public int getCantidadFans() {
-        return cantidadFans;
+    public void perder() {
+        this.partidosPerdidos += 1;
     }
 
-    public int getPartidosJugados() {
-        return partidosJugados;
+    public void empatar() {
+        this.partidosEmpatados += 1;
+    }
+
+    public void ganar() {
+        this.partidosGanados += 1;
+    }
+
+    public void meterGoles(int golesAFavor) {
+        this.golesAFavor += golesAFavor;
+    }
+
+    public void recibirGoles(int golesEnContra) {
+        this.golesEnContra += golesEnContra;
+    }
+
+    public int getPartidosPerdidos() {
+        return partidosPerdidos;
     }
 
     public int getPartidosEmpatados() {
@@ -52,10 +64,6 @@ public class Equipo implements Comparable<Equipo>{
         return partidosGanados;
     }
 
-    public int getPartidosPerdidos() {
-        return partidosPerdidos;
-    }
-
     public int getGolesAFavor() {
         return golesAFavor;
     }
@@ -64,32 +72,29 @@ public class Equipo implements Comparable<Equipo>{
         return golesEnContra;
     }
 
-    public int getDiferenciaGol() {
-        return diferenciaGol;
-    }
+    @Override
+    public int compareTo(Equipo equipo) {
+        int puntos = partidosGanados*3 + partidosEmpatados;
+        int puntosEquipo = equipo.getPartidosGanados()*3 + equipo.getPartidosEmpatados();
+        int difGol = golesAFavor - golesEnContra;
+        int difGolEquipo = equipo.getGolesAFavor() - equipo.getGolesEnContra();
 
-    public String printData(String separador) {
-        int puntos = this.partidosGanados*3 + this.partidosEmpatados;
-        return this.nombre + separador + this.partidosJugados + separador + puntos + separador + this.partidosGanados + separador
-             + this.partidosEmpatados + separador + this.partidosPerdidos + separador + this.golesAFavor + separador
-             + this.golesEnContra + separador + this.diferenciaGol + separador;
+        if (!(puntosEquipo == puntos)) {
+            return puntos - puntosEquipo;
+        } else if (!(difGol == difGolEquipo)){
+            return difGol - difGolEquipo;
+        } else {
+            return golesAFavor - equipo.getGolesAFavor();
+        }
     }
 
     @Override
-    public int compareTo(Equipo equipo) {
-        int puntos = this.partidosGanados*3 + this.partidosEmpatados;
-        int equipoPuntos = equipo.getPartidosGanados()*3 + equipo.getPartidosEmpatados();
+    public boolean equals(Object otro) {
+        if (this==otro) return true;
+        if (this.getClass() != otro.getClass()) return false;
 
-        if (puntos > equipoPuntos) {
-            return 1;
-        } else if (puntos < equipoPuntos) {
-            return -1;
-        } else if (this.diferenciaGol > equipo.getDiferenciaGol()) {
-            return 1;
-        } else if (this.diferenciaGol < equipo.getDiferenciaGol()) {
-            return -1;
-        } else return 0;
+        Equipo otroEquipo = (Equipo) otro;
+        return this.nombre.equals(otroEquipo.getNombre()) && this.fans == otroEquipo.getFans();
     }
-
 
 }
